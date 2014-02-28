@@ -1,7 +1,6 @@
 
 BRICK_SIZE = [2.25, 4, 8];
-BRICK_PADDED = BRICK_SIZE + [0.25, 0.25, 0.25];
-echo(BRICK_PADDED);
+MASONRY_SIZE = 0.25;
 
 red = [1, 0, 0];
 
@@ -55,25 +54,26 @@ module wall(position, direction, length, height) {
 
 // wall([0, 0, 0], [0, BRICK_SIZE[1] + 0.25, 0], 10, 10);
 
-function course_length(bricks) = [8, 0, 0] * bricks + [0.25, 0, 0] * (bricks - 1);
+function course_length(bricks) = 8 * bricks + MASONRY_SIZE * (bricks - 1);
 
 module course_offset(length) {
-   translate(course_length(length)) rotate(90, [0, 0, 1]) translate([4.25, 0, 0]) child();
+   translate(course_length(length)) rotate(90, [0, 0, 1]) translate([4 + MASONRY_SIZE, 0, 0]) child();
 }
 
 module square_course(length) {
-    course([8.25, 0, 0], length);
-    translate(course_length(length)) rotate(90, [0, 0, 1]) translate([4.25, 0, 0]) {
-        course([8.25, 0, 0], length);
-        translate(course_length(length)) rotate(90, [0, 0, 1]) translate([4.25, 0, 0]) {
-            course([8.25, 0, 0], length);
-            translate(course_length(length)) rotate(90, [0, 0, 1]) translate([4.25, 0, 0]) {
-                course([8.25, 0, 0], length);
-            }
-        }
+    half_course = (course_length(length) + 4) / 2 + MASONRY_SIZE;
+    translate([-half_course, -half_course, 0]) course([8.25, 0, 0], length);
+    translate([half_course, -half_course, 0]) rotate(90, [0, 0, 1]) course([8.25, 0, 0], length);
+    translate([half_course, half_course, 0]) rotate(180, [0, 0, 1]) course([8.25, 0, 0], length);
+    translate([-half_course, half_course, 0]) rotate(270, [0, 0, 1]) course([8.25, 0, 0], length);
+}
+
+module square_wall(side, height) {
+    for (z = [0:height]) {
+        translate([0, 0, (2.25 + MASONRY_SIZE) * z]) mirror([0, z % 2, 0]) square_course(side);
     }
 }
 
-for (z = [0:2]) {
-    translate([0, 0, z]) course_offset(4) square_course(4);
-}
+square_wall(4, 10);
+
+translate([40, 0, 0]) square_wall(2, 2);
