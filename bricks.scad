@@ -75,6 +75,5 @@ module square_course(length) {
 }
 
 for (z = [0:2]) {
-    translate([0, 0, z]) {
-    course_offset(4) square_course(4);
+    translate([0, 0, z]) course_offset(4) square_course(4);
 }
