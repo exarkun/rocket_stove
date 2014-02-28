@@ -1,13 +1,19 @@
 include <bricks.scad>;
 
 for (x = [0:9]) {
-    color([1, 0, 0]) brick([x * (2.25 + 0.25), 0, 0], upright);
+    translate([x * (2.25 + 0.25), 0, 0]) upright() brick();
+}
+
+for (x = [0:5]) {
+    translate([x * (4.25 + 0.25), 10, 0]) orthogonal() upright() brick();
 }
 
 for (x = [0:9]) {
-    color([1, 0, 0]) brick([x * (2.25 + 0.25), 20, 0], edge);
+    translate([x * (2.25 + 0.25), 24, 0]) edge() brick();
 }
 
-for (x = [0:2]) {
-    color([1, 0, 0]) brick([x * (8 + 0.25), 24, 0], flat);
+for (x = [0:4]) {
+    translate([x * (4 + 0.25), 34, 0]) orthogonal() flat() brick();
 }
+
+
