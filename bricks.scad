@@ -73,7 +73,3 @@ module square_wall(side, height) {
         translate([0, 0, (2.25 + MASONRY_SIZE) * z]) mirror([0, z % 2, 0]) square_course(side);
     }
 }
-
-square_wall(4, 10);
-
-translate([40, 0, 0]) square_wall(2, 2);
