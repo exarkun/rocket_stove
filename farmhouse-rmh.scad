@@ -45,13 +45,19 @@ color(red) {
         linear_extrude(height=BENCH_LENGTH) {
             difference() {
                 square(size=[BENCH_HEIGHT, BENCH_WIDTH]);
-		// Because we're in a weird coordinate space we need to push
-		//the flue *down* and over.  Zero here is at the *top* of the
-		//bench.  Thus the very weird, complex expression for the x
-		//value of the translation.
 
+		// We're in a weird coordinate space (mostly because of
+		// limitations of extrude_linear I think).  Push the flue into
+		// the mass with x and y (instead of z and y as I would have
+		// thought).  Remember, the extrusion polygon is being rendered
+		// as a tall thing not a long thing.
                 translate([
-                    10,
+		    // Push it in so it is FLUE_DEPTH away from the bench
+		    //surface.  Recall we're going *down* from the surface of
+		    //the bench here.
+                    FLUE_RADIUS + FLUE_DEPTH,
+		    // Push it in so it is FLUE_DEPTH away from the inner
+		    //edge.  This value is pushing *away* from the outer edge.
                     BENCH_WIDTH - FLUE_RADIUS - FLUE_DEPTH,
                    0,
                 ])
